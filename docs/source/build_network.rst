@@ -708,6 +708,47 @@ place the specified source code flavor onto our peer's filesystem.
 .. code:: bash
 
     peer chaincode install -n mycc -v 1.0 -l java -p /opt/gopath/src/github.com/chaincode/chaincode_example02/java/
+    
+When we instantiate the chaincode on the channel, the endorsement policy will be set to require endorsements from a peer in both Org1 and Org2. Therefore, we also need to install the chaincode on a peer in Org2.
+
+Modify the following four environment variables to issue the install command against peer0 in Org2:
+
+.. code:: bash
+
+    # Environment variables for PEER0 in Org2
+    
+    export CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/users/Admin@org2.example.com/msp
+    export CORE_PEER_ADDRESS=peer0.org2.example.com:7051
+    export CORE_PEER_LOCALMSPID="Org2MSP"
+    export CORE_PEER_TLS_ROOTCERT_FILE=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.example.com/peers/peer0.org2.example.com/tls/ca.crt
+
+
+Now install the sample Go, Node.js or Java chaincode onto a peer0 in Org2. These commands place the specified source code flavor onto our peer’s filesystem.
+
+**Golang**
+
+.. code:: bash
+
+    # this installs the Go chaincode. For go chaincode -p takes the relative path from $GOPATH/src
+    peer chaincode install -n mycc -v 1.0 -p github.com/chaincode/chaincode_example02/go/
+
+**Node.js**
+
+.. code:: bash
+
+    # this installs the Node.js chaincode
+    # make note of the -l flag to indicate "node" chaincode
+    # for node chaincode -p takes the absolute path to the node.js chaincode
+    peer chaincode install -n mycc -v 1.0 -l node -p /opt/gopath/src/github.com/chaincode/chaincode_example02/node/
+
+**Java**
+
+.. code:: bash
+
+    # make note of the -l flag to indicate "java" chaincode
+    # for java chaincode -p takes the absolute path to the java chaincode
+    peer chaincode install -n mycc -v 1.0 -l java -p /opt/gopath/src/github.com/chaincode/chaincode_example02/java/
+
 
 Next, instantiate the chaincode on the channel. This will initialize the
 chaincode on the channel, set the endorsement policy for the chaincode, and
@@ -1015,7 +1056,7 @@ using the steps outlined above, however in order to exercise the CouchDB query
 capabilities you will need to use a chaincode that has data modeled as JSON,
 (e.g. **marbles02**). You can locate the **marbles02** chaincode in the
 ``fabric/examples/chaincode/go`` directory.
-
+More than 20 hrs of learning hours have been spent.
 We will follow the same process to create and join the channel as outlined in the
 :ref:`createandjoin` section above.  Once you have joined your peer(s) to the
 channel, use the following steps to interact with the **marbles02** chaincode:
